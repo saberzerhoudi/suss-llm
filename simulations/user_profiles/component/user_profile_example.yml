@@ -1,0 +1,104 @@
+userProfile:
+  id: lmadditionaltermsmartuser
+  queryGenerator:
+    class: AdditionalQueryGenerator
+    attributes:
+      stopword_file:
+        type: string
+        value: ../example_data/terms/stopwords.txt
+        is_argument: true
+  textClassifiers:
+    snippetClassifier:
+      class: LMTextClassifier
+      attributes:
+        stopword_file:
+          type: string
+          value: ../example_data/terms/stopwords.txt
+          is_argument: true
+        background_file:
+          type: string
+          value: ../example_data/terms/vocab.txt
+          is_argument: true
+        threshold:
+          type: float
+          value: -0.1
+          is_argument: false
+        lam:
+          type: float
+          value: 0.1
+          is_argument: false
+        updating:
+          type: boolean
+          value: false
+          is_argument: false
+    documentClassifier:
+      class: LMTextClassifier
+      attributes:
+        stopword_file:
+          type: string
+          value: ../example_data/terms/stopwords.txt
+          is_argument: true
+        background_file:
+          type: string
+          value: ../example_data/terms/vocab.txt
+          is_argument: true
+        threshold:
+          type: float
+          value: -0.1
+          is_argument: false
+        lam:
+          type: float
+          value: 0.1
+          is_argument: false
+        updating:
+          type: boolean
+          value: false
+          is_argument: false
+  stoppingDecisionMaker:
+    class: SequentialNonrelDecisionMakerSkip
+    attributes:
+      nonrelevant_threshold:
+        type: integer
+        value: 3
+        is_argument: true
+  logger:
+    class: FixedCostLogger
+    attributes:
+      time_limit:
+        type: integer
+        value: 600
+        is_argument: true
+      query_cost:
+        type: integer
+        value: 10
+        is_argument: true
+      document_cost:
+        type: integer
+        value: 20
+        is_argument: true
+      snippet_cost:
+        type: integer
+        value: 3
+        is_argument: true
+      serp_results_cost:
+        type: integer
+        value: 5
+        is_argument: true
+      mark_document_cost:
+        type: integer
+        value: 3
+        is_argument: true
+  userContext:
+    class: Memory
+    attributes:
+      relevance_revision:
+        type: integer
+        value: 1
+        is_argument: false
+  serpImpression:
+    class: SimpleSERPImpression
+    attributes:
+      qrel_file:
+        type: string
+        value: ../example_data/qrels/trec2005.qrels.all
+        is_argument: true
